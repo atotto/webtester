@@ -1,0 +1,7 @@
+*.exe
+*.test
+*.prof
+*.log
+*.png
+
+.DS_Store
