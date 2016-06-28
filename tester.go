@@ -1,4 +1,4 @@
-package webtest
+package webtester
 
 import (
 	"io/ioutil"
@@ -76,7 +76,7 @@ func (b *browser) SetPageLoadTimeout(timeout time.Duration) {
 	}
 }
 
-func (b *browser) Visit(rawurl string) *browser {
+func (b *browser) VisitTo(rawurl string) *browser {
 	if _, err := url.Parse(rawurl); err != nil {
 		b.Fatal(err)
 	}
@@ -86,10 +86,16 @@ func (b *browser) Visit(rawurl string) *browser {
 	return b
 }
 
-func (b *browser) WaitElement(target string) *browser {
+func (b *browser) WaitFor(target string) *browser {
 	using, value := splitTarget(b.TB, target)
-	elem, err := WaitElement(b.session, using, value)
-	if err != nil {
+
+	var elem webdriver.WebElement
+	var err error
+	ok := wait(func() bool {
+		elem, err = b.session.FindElement(using, value)
+		return err == nil
+	})
+	if !ok {
 		b.Fatal(err)
 	}
 	b.element = elem
@@ -152,7 +158,7 @@ func (b *browser) Expect(target string, text string) {
 	}
 }
 
-func (b *browser) FindElement(target string) webdriver.WebElement {
+func (b *browser) Find(target string) webdriver.WebElement {
 	using, value := splitTarget(b.TB, target)
 
 	elem, err := b.session.FindElement(using, value)
