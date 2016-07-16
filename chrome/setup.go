@@ -18,18 +18,18 @@ import (
 
 var DriverPath = filepath.Join(os.TempDir(), "chromedriver")
 
-func latestRelease() (version string, err error) {
+func latestRelease() (version string) {
 	res, err := http.Get("http://chromedriver.storage.googleapis.com/LATEST_RELEASE")
 	if err != nil {
-		return "", err
+		return ""
 	}
 	defer res.Body.Close()
 
 	buf, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		return "", err
+		return ""
 	}
-	return string(buf[:len(buf)-1]), nil
+	return string(buf[:len(buf)-1])
 }
 
 func targetArch() (target string, err error) {
@@ -61,10 +61,7 @@ func SetupDriver() error {
 		return err
 	}
 
-	version, err := latestRelease()
-	if err != nil {
-		return err
-	}
+	version := latestRelease()
 
 	_, err = os.Stat(DriverPath)
 	if err != nil && !os.IsNotExist(err) {
