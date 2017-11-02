@@ -38,13 +38,13 @@ func (d *Driver) TearDown() {
 	d.webDriver.Stop()
 }
 
-type browser struct {
+type Browser struct {
 	testing.TB
 	session *webdriver.Session
 	element webdriver.WebElement
 }
 
-func (d *Driver) OpenBrowser() *browser {
+func (d *Driver) OpenBrowser() *Browser {
 	d.Helper()
 
 	desired := webdriver.Capabilities{"Platform": "Linux"}
@@ -56,17 +56,17 @@ func (d *Driver) OpenBrowser() *browser {
 
 	d.sessions = append(d.sessions, session)
 
-	return &browser{
+	return &Browser{
 		TB:      d.TB,
 		session: session,
 	}
 }
 
-func (b *browser) Session() (session *webdriver.Session) {
+func (b *Browser) Session() (session *webdriver.Session) {
 	return b.session
 }
 
-func (b *browser) Element() (elem webdriver.WebElement) {
+func (b *Browser) Element() (elem webdriver.WebElement) {
 	return b.element
 }
 
@@ -74,14 +74,14 @@ func toMillisecond(d time.Duration) int {
 	return int(d / time.Millisecond)
 }
 
-func (b *browser) SetPageLoadTimeout(timeout time.Duration) {
+func (b *Browser) SetPageLoadTimeout(timeout time.Duration) {
 	b.Helper()
 	if err := b.session.SetTimeouts("page load", toMillisecond(timeout)); err != nil {
 		b.Fatal(err)
 	}
 }
 
-func (b *browser) VisitTo(rawurl string) *browser {
+func (b *Browser) VisitTo(rawurl string) *Browser {
 	b.Helper()
 	if _, err := url.Parse(rawurl); err != nil {
 		b.Fatal(err)
@@ -92,7 +92,7 @@ func (b *browser) VisitTo(rawurl string) *browser {
 	return b
 }
 
-func (b *browser) WaitFor(target string) *browser {
+func (b *Browser) WaitFor(target string) *Browser {
 	b.Helper()
 	using, value := splitTarget(b.TB, target)
 
@@ -139,7 +139,7 @@ func toStrategy(usingString string) (using webdriver.FindElementStrategy, ok boo
 	}
 }
 
-func (b *browser) Expect(target string, text string) {
+func (b *Browser) Expect(target string, text string) {
 	b.Helper()
 	using, value := splitTarget(b.TB, target)
 
@@ -167,7 +167,7 @@ func (b *browser) Expect(target string, text string) {
 	}
 }
 
-func (b *browser) Find(target string) webdriver.WebElement {
+func (b *Browser) Find(target string) webdriver.WebElement {
 	b.Helper()
 	using, value := splitTarget(b.TB, target)
 
@@ -179,7 +179,7 @@ func (b *browser) Find(target string) webdriver.WebElement {
 	return elem
 }
 
-func (b *browser) FindElements(target string) []webdriver.WebElement {
+func (b *Browser) FindElements(target string) []webdriver.WebElement {
 	b.Helper()
 	using, value := splitTarget(b.TB, target)
 
@@ -191,7 +191,7 @@ func (b *browser) FindElements(target string) []webdriver.WebElement {
 	return elems
 }
 
-func (b *browser) TakeScreenshot(name string) *browser {
+func (b *Browser) TakeScreenshot(name string) *Browser {
 	b.Helper()
 	buf, err := b.session.Screenshot()
 	if err != nil {
@@ -205,7 +205,7 @@ func (b *browser) TakeScreenshot(name string) *browser {
 	return b
 }
 
-func (b *browser) ExpectTransitTo(rawurl string) *browser {
+func (b *Browser) ExpectTransitTo(rawurl string) *Browser {
 	b.Helper()
 	expect, err := url.Parse(rawurl)
 	if err != nil {
