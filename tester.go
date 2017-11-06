@@ -3,6 +3,8 @@ package webtester
 import (
 	"io/ioutil"
 	"net/url"
+	"reflect"
+	"runtime"
 	"strings"
 	"testing"
 	"time"
@@ -164,6 +166,43 @@ func (b *Browser) Expect(target string, text string) {
 	if !ok {
 		b.Log(err)
 		b.Fatalf("not found: %s", text)
+	}
+}
+
+type Element struct {
+	testing.TB
+	elem webdriver.WebElement
+}
+
+func (e *Element) VerifyText(fn func(string, string) bool, expect string) *Element {
+	e.Helper()
+	actual, err := e.elem.Text()
+	if err != nil {
+		e.Fatal(err)
+	}
+	if !fn(actual, expect) {
+		name := runtime.FuncForPC(reflect.ValueOf(fn).Pointer()).Name()
+		ss := strings.Split(name, ".")
+		if len(ss) == 2 {
+			name = ss[1]
+		}
+		e.Fatalf("want %s %s, got %s", strings.ToLower(name), expect, actual)
+	}
+	return e
+}
+
+func (b *Browser) MustFindElement(target string) *Element {
+	b.Helper()
+	using, value := splitTarget(b.TB, target)
+
+	elem, err := b.session.FindElement(using, value)
+	if err != nil {
+		b.Fatal(err)
+	}
+	b.element = elem
+	return &Element{
+		TB:   b.TB,
+		elem: elem,
 	}
 }
 

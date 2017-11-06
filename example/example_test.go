@@ -3,6 +3,7 @@ package example_test
 import (
 	"log"
 	"os"
+	"strings"
 	"testing"
 	"time"
 
@@ -25,8 +26,13 @@ func TestSimple(tt *testing.T) {
 	d := t.OpenBrowser()
 	d.SetPageLoadTimeout(10 * time.Second)
 
-	d.VisitTo("https://tour.golang.org/").WaitFor("id:run").Element().Click()
-	d.Expect("class:stdout", "Hello, 世界")
+	d.VisitTo("https://tour.golang.org/")
+	d.WaitFor("id:run").Element().Click()
+	d.Expect("class:stdout", "Hello")
+	d.MustFindElement("class:stdout").VerifyText(strings.Contains, "Hello")
+	//d.MustFindElements("class:stdout").Verify(func(e *Element) {
+	//	strings.Contains("Hello")
+	//})
 
 	d.Find("class:next-page").Click()
 	d.ExpectTransitTo("/welcome/2").TakeScreenshot("page2.png")
