@@ -189,32 +189,6 @@ func (b *Browser) MustFindElements(target string) []*Element {
 	return es
 }
 
-func (b *Browser) Find(target string) webdriver.WebElement {
-	b.Helper()
-	b.Log("Deprecated")
-	using, value := splitTarget(b.TB, target)
-
-	elem, err := b.session.FindElement(using, value)
-	if err != nil {
-		b.Fatal(err)
-	}
-	b.element = elem
-	return elem
-}
-
-func (b *Browser) FindElements(target string) []webdriver.WebElement {
-	b.Helper()
-	b.Log("Deprecated")
-	using, value := splitTarget(b.TB, target)
-
-	elems, err := b.session.FindElements(using, value)
-	if err != nil {
-		b.Fatal(err)
-	}
-	// b.element = elem
-	return elems
-}
-
 func (b *Browser) TakeScreenshot(name string) *Browser {
 	b.Helper()
 	buf, err := b.session.Screenshot()
