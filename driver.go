@@ -1,6 +1,7 @@
 package webtester
 
 import (
+	"os"
 	"testing"
 
 	"github.com/bborbe/webdriver"
@@ -39,6 +40,9 @@ func (d *Driver) OpenBrowser() *Browser {
 
 	desired := webdriver.Capabilities{"Platform": "Linux"}
 	required := webdriver.Capabilities{}
+	if os.Getenv("CI") != "" {
+		desired["chromeOptions"] = webdriver.Capabilities{"args": []string{"--headless"}}
+	}
 	session, err := d.webDriver.NewSession(desired, required)
 	if err != nil {
 		d.Fatal(err)
