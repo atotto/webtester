@@ -61,7 +61,8 @@ func SetupDriver() error {
 		return err
 	}
 
-	version := latestRelease()
+	// version := latestRelease()
+	version := "2.37"
 
 	_, err = os.Stat(DriverPath)
 	if err != nil && !os.IsNotExist(err) {
