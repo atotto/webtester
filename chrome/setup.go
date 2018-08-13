@@ -29,7 +29,7 @@ func latestRelease() (version string) {
 	if err != nil {
 		return ""
 	}
-	return string(buf[:len(buf)-1])
+	return string(buf)
 }
 
 func targetArch() (target string, err error) {
@@ -61,8 +61,7 @@ func SetupDriver() error {
 		return err
 	}
 
-	// version := latestRelease()
-	version := "2.37"
+	version := latestRelease()
 
 	_, err = os.Stat(DriverPath)
 	if err != nil && !os.IsNotExist(err) {
