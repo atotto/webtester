@@ -12,14 +12,48 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"regexp"
 	"runtime"
 	"strings"
 )
 
 var DriverPath = filepath.Join(os.TempDir(), "chromedriver")
 
+var chromeBrowser [][]string = [][]string{
+	{"chromium-browser", "--version"},
+	{"chromium", "--version"},
+}
+
+func parseChromeVersion(line []byte) string {
+	re := regexp.MustCompile(`Chromium (\d+)\..* `)
+	ss := re.FindSubmatch(line)
+	if len(ss) != 2 {
+		return ""
+	}
+	return string(ss[1])
+}
+
+func chromeVersion() (version string) {
+	var line []byte
+	var err error
+	for _, chrome := range chromeBrowser {
+		cmd := exec.Command(chrome[0], chrome[1:]...)
+		line, err = cmd.CombinedOutput()
+		if err != nil {
+			continue
+		}
+	}
+	if err != nil {
+		return "74"
+	}
+	return parseChromeVersion(line)
+}
+
 func latestRelease() (version string) {
-	res, err := http.Get("http://chromedriver.storage.googleapis.com/LATEST_RELEASE")
+	var url = "http://chromedriver.storage.googleapis.com/LATEST_RELEASE_"
+	chromeVersion := chromeVersion()
+
+	res, err := http.Get(url + chromeVersion)
 	if err != nil {
 		return ""
 	}
