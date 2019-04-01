@@ -39,8 +39,8 @@ func chromeVersion() (version string) {
 	for _, chrome := range chromeBrowser {
 		cmd := exec.Command(chrome[0], chrome[1:]...)
 		line, err = cmd.CombinedOutput()
-		if err != nil {
-			continue
+		if err == nil {
+			break
 		}
 	}
 	if err != nil {
