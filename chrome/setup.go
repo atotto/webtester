@@ -22,12 +22,15 @@ var DriverPath = filepath.Join(os.TempDir(), "chromedriver")
 var chromeBrowser [][]string = [][]string{
 	{"chromium-browser", "--version"},
 	{"chromium", "--version"},
+	{"google-chrome", "--version"},
 }
 
 func parseChromeVersion(line []byte) string {
-	re := regexp.MustCompile(`Chromium (\d+)\..* `)
+	re := regexp.MustCompile(`.* (\d+)\.(\d+)\.(\d+).*`)
 	ss := re.FindSubmatch(line)
-	if len(ss) != 2 {
+
+	fmt.Printf("%q\n", ss)
+	if len(ss) != 4 {
 		return ""
 	}
 	return string(ss[1])
