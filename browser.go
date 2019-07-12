@@ -203,6 +203,20 @@ func (b *Browser) TakeScreenshot(name string) *Browser {
 	return b
 }
 
+func (b *Browser) TakeSource(name string) *Browser {
+	b.Helper()
+	str, err := b.session.Source()
+	if err != nil {
+		b.Fatal(err)
+	}
+
+	err = ioutil.WriteFile(name, []byte(str), 0644)
+	if err != nil {
+		b.Fatal(err)
+	}
+	return b
+}
+
 func (b *Browser) ExpectTransitTo(rawurl string) *Browser {
 	b.Helper()
 	expect, err := url.Parse(rawurl)
