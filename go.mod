@@ -1,4 +1,4 @@
-module github.com/atotto/webtester
+module github.com/groove-x/webtester
 
 go 1.12
 
