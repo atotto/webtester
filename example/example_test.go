@@ -8,8 +8,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/atotto/webtester"
-	"github.com/atotto/webtester/chrome"
+	"github.com/groove-x/webtester"
+	"github.com/groove-x/webtester/chrome"
 )
 
 func TestMain(m *testing.M) {
@@ -60,6 +60,7 @@ func TestPlayground(t *testing.T) {
 	defer ts.TearDown()
 
 	b := ts.OpenBrowser()
+	b.SetWindowSize(1600,1200)
 	b.SetPageLoadTimeout(2 * time.Second)
 
 	b.VisitTo("https://play.golang.org/")
