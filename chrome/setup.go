@@ -47,7 +47,7 @@ func chromeVersion() (version string) {
 		}
 	}
 	if err != nil {
-		return "74"
+		return "83"
 	}
 	return parseChromeVersion(line)
 }
@@ -82,7 +82,7 @@ func targetArch() (target string, err error) {
 
 	switch runtime.GOOS {
 	case "darwin":
-		return "mac32", nil
+		return "mac64", nil
 	case "linux":
 		return "linux" + arch, nil
 	case "windows":

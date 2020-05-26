@@ -61,7 +61,7 @@ func TestPlayground(t *testing.T) {
 
 	b := ts.OpenBrowser()
 	b.SetWindowSize(1600,1200)
-	b.SetPageLoadTimeout(2 * time.Second)
+	b.SetPageLoadTimeout(4 * time.Second)
 
 	b.VisitTo("https://play.golang.org/")
 	b.WaitFor("id:code").Element().Clear().Input(code)

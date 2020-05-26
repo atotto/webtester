@@ -241,16 +241,14 @@ func (b *Browser) ExpectTransitTo(rawurl string) *Browser {
 	return b
 }
 
-
-
-func (b *Browser) SetWindowSize(width,height int) {
-	b.session.GetCurrentWindowHandle().SetSize(webdriver.Size{width,height})
+func (b *Browser) SetWindowSize(width, height int) {
+	b.session.GetCurrentWindowHandle().SetSize(webdriver.Size{width, height})
 }
 
-func (b *Browser) GetWindowSize()(width,height int, err error) {
-	size,err := b.session.GetCurrentWindowHandle().GetSize()
+func (b *Browser) GetWindowSize() (width, height int, err error) {
+	size, err := b.session.GetCurrentWindowHandle().GetSize()
 	if err != nil {
 		return
 	}
-	return size.Width,size.Height, nil
+	return size.Width, size.Height, nil
 }
