@@ -7,9 +7,9 @@ func TestParseChromeVersion(t *testing.T) {
 		line    string
 		version string
 	}{
-		{`Chromium 73.0.3683.75 Built on Ubuntu , running on Ubuntu 16.04`, "73"},
-		{`Chromium 72.0.3626.122 built on Debian 9.8, running on Debian 9.4`, "72"},
-		{`Google Chrome 73.0.3683.103`, "73"},
+		{`Chromium 83.0.4103.39 Built on Ubuntu , running on Ubuntu 16.04`, "83"},
+		{`Chromium 81.0.4044.92 built on Debian 9.8, running on Debian 9.4`, "81"},
+		{`Google Chrome 83.0.4103.39`, "83"},
 	}
 
 	for n, tt := range tests {
