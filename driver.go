@@ -45,7 +45,9 @@ func (d *Driver) OpenBrowser() *Browser {
 	if os.Getenv("CI") != "" {
 		args = []string{"--headless", "--no-sandbox"}
 	}
-	args = append(args, strings.Split(os.Getenv("CHROME_OPTIONS_ARGS"), " ")...)
+	if v := os.Getenv("CHROME_OPTIONS_ARGS"); v != "" {
+		args = append(args, strings.Split(v, " ")...)
+	}
 	desired["chromeOptions"] = webdriver.Capabilities{"args": args}
 
 	session, err := d.webDriver.NewSession(desired, required)
