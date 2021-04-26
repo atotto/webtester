@@ -48,7 +48,9 @@ func (d *Driver) OpenBrowser() *Browser {
 	if v := os.Getenv("CHROME_OPTIONS_ARGS"); v != "" {
 		args = append(args, strings.Split(v, " ")...)
 	}
-	desired["chromeOptions"] = webdriver.Capabilities{"args": args}
+	if args != nil {
+		desired["chromeOptions"] = webdriver.Capabilities{"args": args}
+	}
 
 	session, err := d.webDriver.NewSession(desired, required)
 	if err != nil {
