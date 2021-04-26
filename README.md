@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/atotto/webtester.svg?style=svg)](https://circleci.com/gh/atotto/webtester)
+
 # web test library for golang
 
 example:
