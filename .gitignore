@@ -3,5 +3,9 @@
 *.prof
 *.log
 *.png
+*.html
 
 .DS_Store
+
+.idea
+

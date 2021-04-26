@@ -1,0 +1,30 @@
+version: 2.1
+jobs:
+  build:
+    working_directory: ~/repo
+    docker:
+      - image: atotto/webtester:latest
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - go-mod-v1-{{ checksum "go.sum" }}
+      - run:
+          name: Install Dependencies
+          command: go mod download
+      - save_cache:
+          key: go-mod-v1-{{ checksum "go.sum" }}
+          paths:
+            - "/go/pkg/mod"
+      - run:
+          name: Chack gofmt
+          command: |
+            test -z `gofmt -l ./ | tee /dev/stderr | head -n 1`
+      - run:
+          name: Chack code
+          command: |
+            go vet ./...
+      - run:
+          name: Run tests
+          command: |
+            go test -v ./...
