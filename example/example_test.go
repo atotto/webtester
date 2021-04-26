@@ -8,8 +8,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/groove-x/webtester"
-	"github.com/groove-x/webtester/chrome"
+	"github.com/atotto/webtester"
+	"github.com/atotto/webtester/chrome"
 )
 
 func TestMain(m *testing.M) {
