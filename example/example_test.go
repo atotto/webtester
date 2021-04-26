@@ -60,7 +60,7 @@ func TestPlayground(t *testing.T) {
 	defer ts.TearDown()
 
 	b := ts.OpenBrowser()
-	b.SetWindowSize(1600,1200)
+	b.SetWindowSize(1600, 1200)
 	b.SetPageLoadTimeout(4 * time.Second)
 
 	b.VisitTo("https://play.golang.org/")
