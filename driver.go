@@ -43,10 +43,22 @@ func (d *Driver) OpenBrowser() *Browser {
 	required := webdriver.Capabilities{}
 	var args []string
 	if os.Getenv("CI") != "" {
-		args = []string{"--headless", "--no-sandbox"}
+		args = []string{
+			"start-maximized",
+			"enable-automation",
+			"--headless",
+			"--no-sandbox",
+			"--disable-infobars",
+			"--disable-extensions",
+			"--disable-dev-shm-usage",
+			"--disable-browser-side-navigation",
+			"--disable-gpu",
+			"--ignore-certificate-errors",
+			"--ignore-ssl-errors",
+		}
 	}
 	if v := os.Getenv("CHROME_OPTIONS_ARGS"); v != "" {
-		args = append(args, strings.Split(v, " ")...)
+		args = strings.Split(v, " ")
 	}
 	if args != nil {
 		desired["chromeOptions"] = webdriver.Capabilities{"args": args}
