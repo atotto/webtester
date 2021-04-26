@@ -242,7 +242,7 @@ func (b *Browser) ExpectTransitTo(rawurl string) *Browser {
 }
 
 func (b *Browser) SetWindowSize(width, height int) {
-	b.session.GetCurrentWindowHandle().SetSize(webdriver.Size{width, height})
+	b.session.GetCurrentWindowHandle().SetSize(webdriver.Size{Width: width, Height: height})
 }
 
 func (b *Browser) GetWindowSize() (width, height int, err error) {
