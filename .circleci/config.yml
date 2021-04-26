@@ -4,6 +4,8 @@ jobs:
     working_directory: ~/repo
     docker:
       - image: atotto/webtester:latest
+    environment:
+      CGO_ENABLED: 0
     steps:
       - checkout
       - restore_cache:
@@ -23,7 +25,6 @@ jobs:
       - run:
           name: Chack code
           command: |
-            export CGO_ENABLED=0
             go vet ./...
       - run:
           name: Run tests
