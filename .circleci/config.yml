@@ -23,6 +23,7 @@ jobs:
       - run:
           name: Chack code
           command: |
+            export CGO_ENABLED=0
             go vet ./...
       - run:
           name: Run tests
