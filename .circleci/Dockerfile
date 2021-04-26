@@ -2,10 +2,10 @@ FROM debian:latest
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN apt update -qq && apt install -y --no-install-recommends wget ca-certificates gpg-agent gnupg && \
+RUN apt-get update -qq && apt-get install -y --no-install-recommends apt-utils wget curl ca-certificates gpg-agent gnupg && \
 	echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list && \
 	wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
-    apt update && apt install -y --no-install-recommends \
+    apt-get update && apt-get install -y --no-install-recommends \
     git openssh-client google-chrome-stable libnss3 libx11-6 && \
     rm -rf /var/lib/apt/lists/*
 
