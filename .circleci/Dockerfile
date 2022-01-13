@@ -10,4 +10,4 @@ RUN apt-get update -qq && apt-get install -y --no-install-recommends apt-utils w
     rm -rf /var/lib/apt/lists/*
 
 # setup golang
-RUN curl -sL "https://storage.googleapis.com/golang/$(curl -s https://golang.org/VERSION?m=text).linux-amd64.tar.gz" | tar xz -C /usr/local && ln -sf /usr/local/go/bin/go /usr/local/bin/go && ln -sf /usr/local/go/bin/gofmt /usr/local/bin/gofmt
+RUN curl -sL "https://dl.google.com/go/$(curl -s https://go.dev/VERSION?m=text).linux-amd64.tar.gz" | tar xz -C /usr/local && ln -sf /usr/local/go/bin/go /usr/local/bin/go && ln -sf /usr/local/go/bin/gofmt /usr/local/bin/gofmt
