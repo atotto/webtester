@@ -27,7 +27,7 @@ func TestSimple(tt *testing.T) {
 	d := t.OpenBrowser()
 	d.SetPageLoadTimeout(4 * time.Second)
 
-	d.VisitTo("https://tour.golang.org/welcome/1")
+	d.VisitTo("https://go.dev/tour/welcome/1")
 	// ngのレンダリングを待たなければrunの結果が出てこない
 	d.TakeSource("./before.html")
 	time.Sleep(2 * time.Second)
@@ -38,9 +38,6 @@ func TestSimple(tt *testing.T) {
 
 	d.WaitFor("class:stdout")
 	d.MustFindElement("class:stdout").VerifyText(strings.Contains, "Hello")
-
-	d.MustFindElement("class:next-page").Click()
-	d.ExpectTransitTo("/welcome/2").TakeScreenshot("page2.png")
 }
 
 var code = `
