@@ -12,21 +12,21 @@ jobs:
           keys:
             - go-mod-v1-{{ checksum "go.sum" }}
       - run:
-          name: Install Dependencies
+          name: go mod download
           command: go mod download
       - save_cache:
           key: go-mod-v1-{{ checksum "go.sum" }}
           paths:
             - "/go/pkg/mod"
       - run:
-          name: Chack gofmt
+          name: check gofmt
           command: |
             test -z `gofmt -l ./ | tee /dev/stderr | head -n 1`
       - run:
-          name: Chack code
+          name: check go vet
           command: |
             go vet ./...
       - run:
-          name: Run tests
+          name: run tests
           command: |
             go test -v ./...
