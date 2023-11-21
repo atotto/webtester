@@ -53,7 +53,7 @@ func chromeVersion() (version string) {
 }
 
 func latestRelease() (version string) {
-	var url = "http://chromedriver.storage.googleapis.com/LATEST_RELEASE_"
+	var url = "https://googlechromelabs.github.io/chrome-for-testing/LATEST_RELEASE_"
 	chromeVersion := chromeVersion()
 
 	res, err := http.Get(url + chromeVersion)
@@ -121,7 +121,7 @@ func SetupDriver() error {
 		}
 	}
 
-	url := fmt.Sprintf("http://chromedriver.storage.googleapis.com/%s/chromedriver_%s.zip", version, target)
+	url := fmt.Sprintf("https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/%s/%s/chromedriver-%s.zip", version, target, target)
 	log.Printf("download from: %s", url)
 
 	res, err := http.Get(url)
@@ -141,7 +141,7 @@ func SetupDriver() error {
 	}
 
 	for _, f := range r.File {
-		savepath := filepath.Join(os.TempDir(), f.Name)
+		savepath := filepath.Join(os.TempDir(), filepath.Base(f.Name))
 		dst, err := os.OpenFile(savepath, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, f.Mode())
 		if err != nil {
 			return err
