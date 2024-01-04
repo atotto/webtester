@@ -3,10 +3,8 @@ package chrome
 import (
 	"archive/zip"
 	"bytes"
-	"errors"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -47,7 +45,7 @@ func chromeVersion() (version string) {
 		}
 	}
 	if err != nil {
-		return "90"
+		return "120"
 	}
 	return parseChromeVersion(line)
 }
@@ -62,7 +60,7 @@ func latestRelease() (version string) {
 	}
 	defer res.Body.Close()
 
-	buf, err := ioutil.ReadAll(res.Body)
+	buf, err := io.ReadAll(res.Body)
 	if err != nil {
 		return ""
 	}
@@ -70,26 +68,31 @@ func latestRelease() (version string) {
 }
 
 func targetArch() (target string, err error) {
-	var arch string
-	switch runtime.GOARCH {
-	case "386":
-		arch = "32"
-	case "amd64":
-		arch = "64"
-	default:
-		return "", errors.New("not supported")
+	archTable := map[string]map[string]string{
+		"linux": {
+			"amd64": "linux64",
+		},
+		"darwin": {
+			"arm64": "mac-arm64",
+			"amd64": "mac-x64",
+		},
+		"windows": {
+			"amd64": "win64",
+			"386":   "win32",
+		},
 	}
 
-	switch runtime.GOOS {
-	case "darwin":
-		return "mac64", nil
-	case "linux":
-		return "linux" + arch, nil
-	case "windows":
-		return "win32", nil
-	default:
-		return "", errors.New("not supported")
+	archs, osSupported := archTable[runtime.GOOS]
+	if !osSupported {
+		return "", fmt.Errorf("not supported: %s", runtime.GOOS)
 	}
+
+	target, archSupported := archs[runtime.GOARCH]
+	if !archSupported {
+		return "", fmt.Errorf("not supported on %s: %s", runtime.GOOS, runtime.GOARCH)
+	}
+
+	return target, nil
 }
 
 func SetupDriver() error {
@@ -112,7 +115,7 @@ func SetupDriver() error {
 		}
 		infos := bytes.Split(buf, []byte(" "))
 		if len(infos) != 3 {
-			return errors.New(fmt.Sprintf("unexpected version string: %s", string(buf)))
+			return fmt.Errorf("unexpected version string: %s", string(buf))
 		}
 		current := string(infos[1])
 
@@ -130,7 +133,7 @@ func SetupDriver() error {
 	}
 	defer res.Body.Close()
 
-	body, err := ioutil.ReadAll(res.Body)
+	body, err := io.ReadAll(res.Body)
 	if err != nil {
 		return err
 	}
