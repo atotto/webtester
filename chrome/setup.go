@@ -46,7 +46,7 @@ func chromeVersion() (version string) {
 		}
 	}
 	if err != nil {
-		return "90"
+		return "120"
 	}
 	return parseChromeVersion(line)
 }
