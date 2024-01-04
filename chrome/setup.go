@@ -6,7 +6,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -62,7 +61,7 @@ func latestRelease() (version string) {
 	}
 	defer res.Body.Close()
 
-	buf, err := ioutil.ReadAll(res.Body)
+	buf, err := io.ReadAll(res.Body)
 	if err != nil {
 		return ""
 	}
@@ -130,7 +129,7 @@ func SetupDriver() error {
 	}
 	defer res.Body.Close()
 
-	body, err := ioutil.ReadAll(res.Body)
+	body, err := io.ReadAll(res.Body)
 	if err != nil {
 		return err
 	}
