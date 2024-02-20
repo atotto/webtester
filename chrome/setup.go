@@ -124,7 +124,7 @@ func SetupDriver() error {
 		}
 	}
 
-	url := fmt.Sprintf("https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/%s/%s/chromedriver-%s.zip", version, target, target)
+	url := fmt.Sprintf("https://storage.googleapis.com/chrome-for-testing-public/%s/%s/chromedriver-%s.zip", version, target, target)
 	log.Printf("download from: %s", url)
 
 	res, err := http.Get(url)
